@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Nested Routes Example</title>
+    <!-- React and ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- React Router DOM -->
+    <script src="https://unpkg.com/react-router-dom@6/umd/react-router-dom.development.js" crossorigin></script>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      nav a {
+        margin-right: 15px;
+        text-decoration: none;
+        color: blue;
+      }
+      nav a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const {
+        BrowserRouter,
+        Routes,
+        Route,
+        Link,
+        Outlet
+      } = ReactRouterDOM;
+
+      function App() {
+        return (
+          <BrowserRouter>
+            <nav>
+              <Link to="/">Home</Link>
+              <Link to="/dashboard">Dashboard</Link>
+            </nav>
+
+            <Routes>
+              <Route path="/" element={<Home />} />
+              
+              {/* Parent Route */}
+              <Route path="/dashboard" element={<Dashboard />}>
+                {/* Nested Routes */}
+                <Route path="profile" element={<Profile />} />
+                <Route path="settings" element={<Settings />} />
+              </Route>
+
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        );
+      }
+
+      function Home() {
+        return <h2>Welcome to Home Page</h2>;
+      }
+
+      function Dashboard() {
+        return (
+          <div>
+            <h2>Dashboard</h2>
+            <nav>
+              <Link to="profile">Profile</Link>
+              <Link to="settings">Settings</Link>
+            </nav>
+            <hr />
+            <Outlet />
+          </div>
+        );
+      }
+
+      function Profile() {
+        return <h3>This is the Profile Page.</h3>;
+      }
+
+      function Settings() {
+        return <h3>This is the Settings Page.</h3>;
+      }
+
+      function NotFound() {
+        return <h3>404 - Page Not Found</h3>;
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
